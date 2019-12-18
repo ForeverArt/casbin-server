@@ -29,7 +29,7 @@ import (
 	//_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-var errDriverName = errors.New("currently supported DriverName: file | mysql | postgres | mssql")
+var errDriverName = "currently supported DriverName: file | mysql | postgres | mssql"
 
 func newAdapter(in *pb.NewAdapterRequest) (persist.Adapter, error) {
 	var a persist.Adapter
@@ -47,8 +47,9 @@ func newAdapter(in *pb.NewAdapterRequest) (persist.Adapter, error) {
 				break
 			}
 		}
+
 		if !support {
-      return nil, fmt.Sprintf('%s, current provided is: %s', errDriverName, in.DriverName)
+      return nil, errors.New(fmt.Sprintf("%s, current provided is: %s", errDriverName, in.DriverName))
 		}
 
 		var err error
