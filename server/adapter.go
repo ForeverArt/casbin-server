@@ -48,7 +48,7 @@ func newAdapter(in *pb.NewAdapterRequest) (persist.Adapter, error) {
 			}
 		}
 		if !support {
-			return nil, errDriverName
+      return nil, fmt.Sprintf('%s, current provided is: %s', errDriverName, in.DriverName)
 		}
 
 		var err error
