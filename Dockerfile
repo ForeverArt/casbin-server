@@ -1,19 +1,16 @@
-FROM grpc/go
+FROM golang:1.12-alpine as builder
+
+ENV GO111MODULE=on
+ENV GOPROXY=https://goproxy.cn
+
 ADD . /go/src/github.com/casbin/casbin-server
-WORKDIR $GOPATH/src/github.com/casbin/casbin-server
-RUN protoc -I proto --go_out=plugins=grpc:proto proto/casbin.proto
+WORKDIR /go/src/github.com/casbin/casbin-server
 
-# Download and install the latest release of dep
-# ADD https://github.com/golang/dep/releases/download/v0.5.4/dep-linux-amd64 /usr/bin/dep
-# RUN chmod +x /usr/bin/dep
+RUN CGO_ENABLED=0 go build -ldflags "-s -w -X main.version=1.0.0" -v -a -installsuffix cgo -o casbin_server main.go
 
-# Install dependencies
-RUN go get -d -v ./...
-# RUN dep init
-# RUN dep ensure --vendor-only
 
-# Install app
-RUN go build
-ENTRYPOINT $GOPATH/bin/casbin-server
+FROM scratch
+WORKDIR /root/
+COPY --from=builder /go/src/github.com/casbin/casbin-server/casbin_server .
+CMD ["./casbin_server"]
 
-EXPOSE 50051
