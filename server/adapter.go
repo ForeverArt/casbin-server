@@ -53,6 +53,9 @@ func newAdapter(in *pb.NewAdapterRequest) (persist.Adapter, error) {
 		}
 
 		var err error
+    fmt.Println(in.DriverName)
+    fmt.Println(in.ConnectString)
+    fmt.Println(in.DbSpecified)
 		a, err = gormadapter.NewAdapter(in.DriverName, in.ConnectString, in.DbSpecified)
 		if err != nil {
 			return nil, err
@@ -63,7 +66,9 @@ func newAdapter(in *pb.NewAdapterRequest) (persist.Adapter, error) {
 }
 
 func checkLocalConfig(in *pb.NewAdapterRequest) *pb.NewAdapterRequest {
-	cfg := LoadConfiguration("config/connection_config.json")
+  fmt.Println(in.ConnectString)
+  fmt.Println(in.DriverName)
+	cfg := LoadConfiguration("./config/connection_config.json")
 	if in.ConnectString == "" || in.DriverName == "" {
 		in.DriverName = cfg.Driver
 		in.ConnectString = cfg.Connection
