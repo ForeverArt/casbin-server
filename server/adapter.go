@@ -63,7 +63,7 @@ func newAdapter(in *pb.NewAdapterRequest) (persist.Adapter, error) {
 }
 
 func checkLocalConfig(in *pb.NewAdapterRequest) *pb.NewAdapterRequest {
-	cfg := LoadConfiguration("config/connection_config.json")
+	cfg := LoadConfiguration("../config/connection_config.json")
 	if in.ConnectString == "" || in.DriverName == "" {
 		in.DriverName = cfg.Driver
 		in.ConnectString = cfg.Connection
