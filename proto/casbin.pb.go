@@ -155,8 +155,6 @@ func (m *NewAdapterRequest) GetAdapterName() string {
 func (m *NewAdapterRequest) GetDriverName() string {
 	if m != nil {
 		return m.DriverName
-	} else {
-    fmt.Println("!!m == nil")
   }
 	return ""
 }
